@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="5dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+           <TextView
+               android:id="@+id/mensajeChat"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:background="@drawable/boton_presionado"
+               android:text="Entonces asi"
+               android:layout_weight="1"
+               android:textColor="@android:color/black"
+               android:padding="12dp"/>
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:id="@+id/timestampChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11/12/2020 13:90"
+            android:textSize="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>
