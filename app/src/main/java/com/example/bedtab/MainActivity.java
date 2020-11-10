@@ -1,5 +1,6 @@
 package com.example.bedtab;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         tstmp=simpleDateFormat.format(calendar.getTime());
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard)
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_places)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+
     private void checkUserStatus(){
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
@@ -59,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor=sp.edit();
             editor.putString("Current_USERID",id);
             editor.apply();
+        }
+        else{
+            Intent i = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(i);
+            finish();
         }
     }
 

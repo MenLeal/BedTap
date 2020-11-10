@@ -9,4 +9,8 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_baseline_chat_bubble_24"
         android:title="@string/title_home" />
+    <item
+        android:id="@+id/navigation_places"
+        android:icon="@drawable/ic_baseline_apartment_24"
+        android:title="@string/title_places" />
 </menu>

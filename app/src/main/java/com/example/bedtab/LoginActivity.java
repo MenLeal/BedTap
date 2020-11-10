@@ -145,7 +145,6 @@ public class LoginActivity extends AppCompatActivity {
                                                                         if(task2.isSuccessful()){
                                                                             Toast.makeText(LoginActivity.this,"Registrado",Toast.LENGTH_LONG);
                                                                             Intent i=new Intent(LoginActivity.this, MainActivity.class);
-                                                                            i.putExtra("TimeStmp",tstmp);
                                                                             startActivity(i);
                                                                             finish();
                                                                         }
@@ -174,26 +173,20 @@ public class LoginActivity extends AppCompatActivity {
     }
     @Override
     public void onStart() {
-        super.onStart();
         if(fAuth.getCurrentUser()!=null){
+            super.onStart();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
+
         }
         else{
             super.onStart();
         }
+
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(fAuth.getCurrentUser()!=null){
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        }
-        else{
-            super.onResume();
-        }
-    }
+
+
+
 
 
 }
