@@ -28,7 +28,6 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         public OfferViewHolder(@NonNull View itemView) {
             super(itemView);
             //Recuperamos de la vista las variables
-
             imgproducto=itemView.findViewById(R.id.imgprod);
             product=itemView.findViewById(R.id.producto);
             prize=itemView.findViewById(R.id.price);

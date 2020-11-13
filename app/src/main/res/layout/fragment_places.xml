@@ -12,7 +12,7 @@
     android:paddingBottom="?attr/actionBarSize">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvOfertas"
+        android:id="@+id/rvPlaces"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
