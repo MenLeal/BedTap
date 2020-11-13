@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -20,7 +20,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="5dp">
                 <TextView
                     android:textSize="20dp"
                     android:textColor="@android:color/black"
@@ -44,15 +45,15 @@
                     <ImageButton
                         android:id="@+id/location"
                         android:background="@android:color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@drawable/ic_baseline_location_on_24"/>
                     <ImageButton
                         android:id="@+id/numPlace"
                         android:layout_marginLeft="5dp"
                         android:background="@android:color/white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:src="@drawable/ic_baseline_phone_24"/>
                 </LinearLayout>
             </LinearLayout>

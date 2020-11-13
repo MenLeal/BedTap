@@ -26,7 +26,10 @@ public class PlacesFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_places, container, false);
         placeList = new ArrayList<>();
-        placeList.add(new Place(R.mipmap.autospa, "Refaccionaria", "De 07:00 AM a 2:00 PM"));
+        placeList.add(new Place(R.mipmap.grupob, "Refaccionaria", "De 07:00 AM a 2:00 PM"));
+        placeList.add(new Place(R.mipmap.autospa, "AutoSpa", "De ChecarHora"));
+        placeList.add(new Place(R.mipmap.serviciog, "Servicio de Grua 24hrs", "Llantera: De 07:00 AM a 2:00 PM"));
+        placeList.add(new Place(R.mipmap.carwash, "Carwash", "De ChecarHora"));
 
         recyclerView = root.findViewById(R.id.rvPlaces);
         recyclerView.setHasFixedSize(true);
