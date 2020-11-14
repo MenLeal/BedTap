@@ -4,14 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.example.bedtab.Place;
 import com.example.bedtab.R;
 
@@ -21,14 +17,24 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
     private ArrayList<Place> mPlaceList;
     private Context context;
     private Place mPlace;
+    private OnItemClickListener mlistener;
+
+    public interface OnItemClickListener{
+        void OpenPhone(int position);
+        void OpenLocation(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mlistener=listener;
+    }
     public class PlacesViewHolder extends RecyclerView.ViewHolder{
         public ImageView imgplace;
         public TextView nomplace;
         public TextView adress;
-        public ImageButton location;
-        public ImageButton numPlace;
+        public ImageView location;
+        public ImageView numPlace;
 
-        public PlacesViewHolder(@NonNull View itemView) {
+        public PlacesViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             //Recuperamos de la vista las variables
 
@@ -37,6 +43,29 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
             adress=itemView.findViewById(R.id.adress);
             location=itemView.findViewById(R.id.location);
             numPlace=itemView.findViewById(R.id.numPlace);
+
+            location.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            listener.OpenLocation(position);
+                        }
+                    }
+                }
+            });
+            numPlace.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            listener.OpenPhone(position);
+                        }
+                    }
+                }
+            });
         }
     }
     public PlacesAdapter(Context c,ArrayList<Place> placelist){
@@ -48,7 +77,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
     @Override
     public PlacesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.place_item,parent,false);
-        PlacesViewHolder ofvh=new PlacesViewHolder(v);
+        PlacesViewHolder ofvh=new PlacesViewHolder(v,mlistener);
         return ofvh;
     }
 
