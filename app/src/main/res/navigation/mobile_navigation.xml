@@ -19,6 +19,6 @@
     <fragment
         android:id="@+id/navigation_places"
         android:name="com.example.bedtab.ui.places.PlacesFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_places"
         tools:layout="@layout/fragment_places"/>
 </navigation>
