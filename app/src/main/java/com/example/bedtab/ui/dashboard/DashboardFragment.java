@@ -34,7 +34,7 @@ public class DashboardFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private ArrayList<Offer> mList;
-    private RecyclerView.Adapter mAdapter;
+    private OfferAdapter mAdapter;
     private String admin;
     private FirebaseAuth fAuth;
     private TextView nombredialog;
@@ -66,6 +66,12 @@ public class DashboardFragment extends Fragment {
                     mList.add(e);
                 }
                 mAdapter=new OfferAdapter(getContext(),mList);
+                mAdapter.setOnItemClickListener(new OfferAdapter.OnItemClickListener() {
+                    @Override
+                    public void deleteItem(int position) {
+                        Toast.makeText(getContext(),"Siiii", Toast.LENGTH_LONG).show();
+                    }
+                });
                 recyclerView.setAdapter(mAdapter);
             }
 
