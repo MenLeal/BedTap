@@ -1,5 +1,4 @@
 package com.example.bedtab.ui.dashboard;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,18 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bedtab.DeleteItems;
 import com.example.bedtab.ImagenCrop;
 import com.example.bedtab.LoginActivity;
-import com.example.bedtab.MainActivity;
 import com.example.bedtab.models.Offer;
 import com.example.bedtab.Adapters.OfferAdapter;
 import com.example.bedtab.R;
 import com.example.bedtab.models.Usuario;
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -81,8 +75,16 @@ public class DashboardFragment extends Fragment {
                 }
                 mAdapter.setOnItemClickListener(new OfferAdapter.OnItemClickListener() {
                     @Override
-                    public void deleteItem(int position) {
-
+                    public void deleteItem(final int position) {
+                        String sid=mList.get(position).getId();
+                        refdelete.child("Productos").child(sid).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getContext(),"Eliminado",Toast.LENGTH_LONG).show();
+                                mList.remove(mList.get(position));
+                                mAdapter.notifyItemRemoved(position);
+                            }
+                        });
                     }
                 });
                 mAdapter.notifyDataSetChanged();
