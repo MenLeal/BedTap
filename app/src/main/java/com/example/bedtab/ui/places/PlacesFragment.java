@@ -6,18 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.bedtab.Adapters.PlacesAdapter;
-import com.example.bedtab.Place;
+import com.example.bedtab.models.Place;
 import com.example.bedtab.R;
-
 import java.util.ArrayList;
 
 public class PlacesFragment extends Fragment {
@@ -30,10 +25,10 @@ public class PlacesFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_places, container, false);
         placeList = new ArrayList<>();
-        placeList.add(new Place(R.mipmap.grupob, "Refaccionaria", "De 07:00 AM a 2:00 PM","Refaccionaria Bedher, Calle 49, Centro, Tizimín, Yuc."," 9868632211"));
-        placeList.add(new Place(R.mipmap.autospa, "AutoSpa", "De ChecarHora","Bedher auto spa, Calle 48, 8 Calles, Tizimín, Yuc."," 9868636912"));
-        placeList.add(new Place(R.mipmap.serviciog, "Servicio de Grúa 24hrs", "Llantera: De 07:00 AM a 2:00 PM","Mobil Llantera Y Mecánica Express","9861191626"));
-        placeList.add(new Place(R.mipmap.carwash, "Carwash", "De ChecarHora","LLantera Car Wash, Calle 48, 8 Calles, Tizimín, Yuc.","9868636556"));
+        placeList.add(new Place(R.mipmap.grupob, "Refaccionaria", "De 07:00 AM a 8:00 PM","Refaccionaria Bedher, Calle 49, Centro, Tizimín, Yuc."," 9868632211")); //Domingo 8:00 AM : 1:00 pm
+        placeList.add(new Place(R.mipmap.autospa, "AutoSpa", "De 7:00 AM a 7:00 PM","Bedher auto spa, Calle 48, 8 Calles, Tizimín, Yuc."," 9868636912"));
+        placeList.add(new Place(R.mipmap.serviciog, "Servicio de Grúa 24hrs", "Llantera: De 07:00 AM a 7:00 PM","Mobil Llantera Y Mecánica Express","9861191626"));
+        placeList.add(new Place(R.mipmap.carwash, "Carwash", "De 7:00 AM a 7:00 PM","LLantera Car Wash, Calle 48, 8 Calles, Tizimín, Yuc.","9868636556"));
         recyclerView = root.findViewById(R.id.rvPlaces);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());

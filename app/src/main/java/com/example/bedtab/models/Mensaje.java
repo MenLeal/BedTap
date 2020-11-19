@@ -1,4 +1,4 @@
-package com.example.bedtab;
+package com.example.bedtab.models;
 public class Mensaje {
     private String mensaje;
     private String sender;

@@ -1,4 +1,5 @@
 package com.example.bedtab.ui.dashboard;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +15,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bedtab.DeleteItems;
 import com.example.bedtab.ImagenCrop;
 import com.example.bedtab.LoginActivity;
-import com.example.bedtab.Offer;
+import com.example.bedtab.MainActivity;
+import com.example.bedtab.models.Offer;
 import com.example.bedtab.Adapters.OfferAdapter;
 import com.example.bedtab.R;
-import com.example.bedtab.ui.models.Usuario;
+import com.example.bedtab.models.Usuario;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +39,9 @@ import java.util.ArrayList;
 public class DashboardFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
+    private FirebaseDatabase database2;
     private DatabaseReference ref;
+    private DatabaseReference refdelete;
     private ArrayList<Offer> mList;
     private OfferAdapter mAdapter;
     private String admin;
@@ -55,24 +64,29 @@ public class DashboardFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mList=new ArrayList<>();
+        mAdapter=new OfferAdapter(getContext(),mList);
+        recyclerView.setAdapter(mAdapter);
         database=FirebaseDatabase.getInstance();
+        database2=FirebaseDatabase.getInstance();
         ref=database.getReference("Productos");
+        refdelete=database2.getReference();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                mList.clear();
                 for(DataSnapshot snapshot1:snapshot.getChildren()){
                     Offer e=snapshot1.getValue(Offer.class);
+                    String sid=snapshot1.getKey();
+                    e.setId(sid);
                     mList.add(e);
                 }
-                mAdapter=new OfferAdapter(getContext(),mList);
                 mAdapter.setOnItemClickListener(new OfferAdapter.OnItemClickListener() {
                     @Override
                     public void deleteItem(int position) {
-                        Toast.makeText(getContext(),"Siiii", Toast.LENGTH_LONG).show();
+
                     }
                 });
-                recyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -125,8 +139,9 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         getActivity().finish();
+                        Intent i = new Intent(getActivity(),LoginActivity.class);
+                        startActivity(i);
                     }
                 });
 
@@ -134,5 +149,6 @@ public class DashboardFragment extends Fragment {
         });
         return root;
     }
+
 
 }
