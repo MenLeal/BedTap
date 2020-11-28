@@ -170,7 +170,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     mList.clear();
-                    for(DataSnapshot sp: snapshot.getChildren()){
+                    for(DataSnapshot sp: snapshot.getChildren()) {
                         mList.add(sp.getValue(Mensaje.class));
                     }
                     adapter=new MensajesAdapter(getContext(),mList);

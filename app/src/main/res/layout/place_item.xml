@@ -30,10 +30,15 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_places"/>
                 <TextView
-                    android:id="@+id/adress"
+                android:id="@+id/adress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_places"/>
+                <TextView
+                    android:id="@+id/doming"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_places"/>
+                    android:text="Dom: 8:00 AM a 1:00 PM"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

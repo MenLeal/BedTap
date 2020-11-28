@@ -20,6 +20,7 @@ import com.example.bedtab.models.Offer;
 import com.example.bedtab.Adapters.OfferAdapter;
 import com.example.bedtab.R;
 import com.example.bedtab.models.Usuario;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 public class DashboardFragment extends Fragment {
@@ -36,6 +40,7 @@ public class DashboardFragment extends Fragment {
     private FirebaseDatabase database2;
     private DatabaseReference ref;
     private DatabaseReference refdelete;
+    private FirebaseStorage mStoragedelete;
     private ArrayList<Offer> mList;
     private OfferAdapter mAdapter;
     private String admin;
@@ -64,9 +69,11 @@ public class DashboardFragment extends Fragment {
         database2=FirebaseDatabase.getInstance();
         ref=database.getReference("Productos");
         refdelete=database2.getReference();
+        mStoragedelete= FirebaseStorage.getInstance();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mList.clear();
                 for(DataSnapshot snapshot1:snapshot.getChildren()){
                     Offer e=snapshot1.getValue(Offer.class);
                     String sid=snapshot1.getKey();
@@ -77,14 +84,21 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void deleteItem(final int position) {
                         String sid=mList.get(position).getId();
-                        refdelete.child("Productos").child(sid).setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        StorageReference delete=mStoragedelete.getReferenceFromUrl(mList.get(position).getImageURL());
+                        delete.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                refdelete.child("Productos").child(mList.get(position).getId()).removeValue();
                                 Toast.makeText(getContext(),"Eliminado",Toast.LENGTH_LONG).show();
-                                mList.remove(mList.get(position));
-                                mAdapter.notifyItemRemoved(position);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(),"ERROR",Toast.LENGTH_LONG).show();
                             }
                         });
+
+
                     }
                 });
                 mAdapter.notifyDataSetChanged();

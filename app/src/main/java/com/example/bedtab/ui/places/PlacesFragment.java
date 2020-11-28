@@ -25,10 +25,10 @@ public class PlacesFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_places, container, false);
         placeList = new ArrayList<>();
-        placeList.add(new Place(R.mipmap.grupob, "Refaccionaria", "De 07:00 AM a 8:00 PM","Refaccionaria Bedher, Calle 49, Centro, Tizimín, Yuc."," 9868632211")); //Domingo 8:00 AM : 1:00 pm
+        placeList.add(new Place(R.mipmap.grupob, "Refaccionaria", "De 07:00 AM a 8:00 PM","Refaccionaria Bedher, Calle 49, Centro, Tizimín, Yuc."," 9868632211"));
         placeList.add(new Place(R.mipmap.autospa, "AutoSpa", "De 7:00 AM a 7:00 PM","Bedher auto spa, Calle 48, 8 Calles, Tizimín, Yuc."," 9868636912"));
-        placeList.add(new Place(R.mipmap.serviciog, "Servicio de Grúa 24hrs", "Llantera: De 07:00 AM a 7:00 PM","Mobil Llantera Y Mecánica Express","9861191626"));
-        placeList.add(new Place(R.mipmap.carwash, "Carwash", "De 7:00 AM a 7:00 PM","LLantera Car Wash, Calle 48, 8 Calles, Tizimín, Yuc.","9868636556"));
+        placeList.add(new Place(R.mipmap.llantera, "Servicio de Grúa 24hrs", "Llantera: De 07:00 AM a 7:00 PM","Mobil Llantera Y Mecánica Express","9861191626"));
+        placeList.add(new Place(R.mipmap.carwash2, "Carwash", "De 7:00 AM a 7:00 PM","LLantera Car Wash, Calle 48, 8 Calles, Tizimín, Yuc.","9868636556"));
         recyclerView = root.findViewById(R.id.rvPlaces);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
