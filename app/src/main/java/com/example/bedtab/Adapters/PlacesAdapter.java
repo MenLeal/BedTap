@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.bedtab.Place;
+import com.example.bedtab.models.Place;
 import com.example.bedtab.R;
 
 import java.util.ArrayList;

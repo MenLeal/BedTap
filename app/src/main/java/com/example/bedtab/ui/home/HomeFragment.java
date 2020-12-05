@@ -23,14 +23,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.bedtab.ChatActivity;
 import com.example.bedtab.ViewHolders.ChatViewHolder;
-import com.example.bedtab.Mensaje;
+import com.example.bedtab.models.Mensaje;
 import com.example.bedtab.Adapters.MensajesAdapter;
 import com.example.bedtab.R;
 import com.example.bedtab.notificación.Data;
 import com.example.bedtab.notificación.Sender;
 import com.example.bedtab.notificación.Token;
-import com.example.bedtab.ui.models.UserAdmin;
-import com.example.bedtab.ui.models.Usuario;
+import com.example.bedtab.models.UserAdmin;
+import com.example.bedtab.models.Usuario;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -170,7 +170,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     mList.clear();
-                    for(DataSnapshot sp: snapshot.getChildren()){
+                    for(DataSnapshot sp: snapshot.getChildren()) {
                         mList.add(sp.getValue(Mensaje.class));
                     }
                     adapter=new MensajesAdapter(getContext(),mList);

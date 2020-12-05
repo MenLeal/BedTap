@@ -54,7 +54,6 @@ public class ImagenCrop extends AppCompatActivity {
     private String producto;
     private String precio;
     private String descripcion;
-    private AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +66,6 @@ public class ImagenCrop extends AppCompatActivity {
          descrip=findViewById(R.id.descrip);
          imgref= FirebaseDatabase.getInstance().getReference().child("Productos");
          storageReference= FirebaseStorage.getInstance().getReference().child("FotosProductos");
-
 
         img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +144,7 @@ public class ImagenCrop extends AppCompatActivity {
                                 offer.put("prize","$"+precio);
                                 offer.put("description",descripcion);
                                 offer.put("imageURL", downloaduri.toString());
+                                offer.put("id",imgref.push().getKey());
                                 imgref.push().setValue(offer);
                                 Toast.makeText(ImagenCrop.this, "Producto subido con éxito", Toast.LENGTH_LONG).show();
                                 finish();

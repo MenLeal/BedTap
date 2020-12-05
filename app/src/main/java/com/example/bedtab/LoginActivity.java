@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bedtab.models.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private DatabaseReference mDatabase3;
+    private DatabaseReference mDatabase4;
     private String nombre;
     private String numtel;
     private AlertDialog dialog;
@@ -59,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase2= FirebaseDatabase.getInstance().getReference();
         mDatabase3= FirebaseDatabase.getInstance().getReference();
+        mDatabase4= FirebaseDatabase.getInstance().getReference();
         calendar= Calendar.getInstance();
         simpleDateFormat=new SimpleDateFormat("dd/MMM/yyyy hh:mm a ");
         uid="5vuXOTy9SdTvYcWaaxfDx9ZeR7j2";
@@ -177,16 +182,10 @@ public class LoginActivity extends AppCompatActivity {
             super.onStart();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
-
         }
         else{
             super.onStart();
         }
 
     }
-
-
-
-
-
 }

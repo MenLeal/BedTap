@@ -1,4 +1,4 @@
-package com.example.bedtab.ui.models;
+package com.example.bedtab.models;
 
 
 

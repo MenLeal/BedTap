@@ -16,10 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bedtab.ImagenCrop;
 import com.example.bedtab.LoginActivity;
-import com.example.bedtab.Offer;
+import com.example.bedtab.models.Offer;
 import com.example.bedtab.Adapters.OfferAdapter;
 import com.example.bedtab.R;
-import com.example.bedtab.ui.models.Usuario;
+import com.example.bedtab.models.Usuario;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,14 +29,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 public class DashboardFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
+    private FirebaseDatabase database2;
     private DatabaseReference ref;
+    private DatabaseReference refdelete;
+    private FirebaseStorage mStoragedelete;
     private ArrayList<Offer> mList;
-    private RecyclerView.Adapter mAdapter;
+    private OfferAdapter mAdapter;
     private String admin;
     private FirebaseAuth fAuth;
     private TextView nombredialog;
@@ -55,18 +63,46 @@ public class DashboardFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mList=new ArrayList<>();
+        mAdapter=new OfferAdapter(getContext(),mList);
+        recyclerView.setAdapter(mAdapter);
         database=FirebaseDatabase.getInstance();
+        database2=FirebaseDatabase.getInstance();
         ref=database.getReference("Productos");
+        refdelete=database2.getReference();
+        mStoragedelete= FirebaseStorage.getInstance();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mList.clear();
                 for(DataSnapshot snapshot1:snapshot.getChildren()){
                     Offer e=snapshot1.getValue(Offer.class);
+                    String sid=snapshot1.getKey();
+                    e.setId(sid);
                     mList.add(e);
                 }
-                mAdapter=new OfferAdapter(getContext(),mList);
-                recyclerView.setAdapter(mAdapter);
+                mAdapter.setOnItemClickListener(new OfferAdapter.OnItemClickListener() {
+                    @Override
+                    public void deleteItem(final int position) {
+                        String sid=mList.get(position).getId();
+                        StorageReference delete=mStoragedelete.getReferenceFromUrl(mList.get(position).getImageURL());
+                        delete.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                refdelete.child("Productos").child(mList.get(position).getId()).removeValue();
+                                Toast.makeText(getContext(),"Eliminado",Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(),"ERROR",Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
+                    }
+                });
+                mAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -119,8 +155,9 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
                         getActivity().finish();
+                        Intent i = new Intent(getActivity(),LoginActivity.class);
+                        startActivity(i);
                     }
                 });
 
@@ -128,5 +165,6 @@ public class DashboardFragment extends Fragment {
         });
         return root;
     }
+
 
 }
