@@ -23,19 +23,10 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private String id;
-    private FirebaseUser user;
-    private Calendar calendar;
-    private SimpleDateFormat simpleDateFormat;
-    private String tstmp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        user= FirebaseAuth.getInstance().getCurrentUser();
-        id=user.getUid();
-        calendar= Calendar.getInstance();
-        simpleDateFormat=new SimpleDateFormat("dd/MMM/yyyy hh:mm a ");
-        tstmp=simpleDateFormat.format(calendar.getTime());
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_places)
@@ -45,13 +36,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
-
     @Override
-    protected void onResume() {
+    protected void onStart() {
         checkUserStatus();
-        super.onResume();
+        super.onStart();
     }
-
 
     private void checkUserStatus(){
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();

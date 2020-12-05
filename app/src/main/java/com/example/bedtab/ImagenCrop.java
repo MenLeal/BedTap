@@ -67,7 +67,6 @@ public class ImagenCrop extends AppCompatActivity {
          imgref= FirebaseDatabase.getInstance().getReference().child("Productos");
          storageReference= FirebaseStorage.getInstance().getReference().child("FotosProductos");
 
-
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
