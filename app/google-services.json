@@ -8,38 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1051828506337:android:18bebe7d3a65c666cb71a0",
+        "mobilesdk_app_id": "1:1051828506337:android:48a3a26b6787d580cb71a0",
         "android_client_info": {
-          "package_name": "com.example.bedtab"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1051828506337-v1ph7kqc0200rqb5qbs4mfahv5289coh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAADw9qg4VIueS59yWl3GZQLeM7MAyNGsM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1051828506337-v1ph7kqc0200rqb5qbs4mfahv5289coh.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1051828506337:android:cc488bcc2fd33ce4cb71a0",
-        "android_client_info": {
-          "package_name": "com.example.chatprueba"
+          "package_name": "com.bedtap"
         }
       },
       "oauth_client": [

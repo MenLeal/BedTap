@@ -6,7 +6,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.example.bedtab"
+        applicationId "com.bedtab"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
