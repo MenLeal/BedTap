@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1051828506337:android:48a3a26b6787d580cb71a0",
+        "mobilesdk_app_id": "1:1051828506337:android:e169a6d9cbe5c6d5cb71a0",
         "android_client_info": {
-          "package_name": "com.bedtap"
+          "package_name": "com.grupobedher.bedtap"
         }
       },
       "oauth_client": [

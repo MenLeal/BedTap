@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bedtab">
+    package="com.grupobedher.bedtab">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,14 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.grupobedher.bedtab.MainActivity"
             android:label="@string/app_name"></activity>
         <activity
-            android:name=".ChatActivity"
+            android:name="com.grupobedher.bedtab.ChatActivity"
             android:label="Chat"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="com.grupobedher.bedtab.MainActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.grupobedher.bedtab.LoginActivity"
             android:theme="@style/AppThemeNo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,18 +28,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.grupobedher.bedtab.RegisterActivity"
             android:theme="@style/AppThemeNo" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
-            android:name=".ImagenCrop"
+            android:name="com.grupobedher.bedtab.ImagenCrop"
             android:label="Detalles del Producto"
             android:parentActivityName="com.theartofdev.edmodo.cropper.CropImageActivity" />
 
         <service
-            android:name=".notificación.FirebaseMessaging"
+            android:name="com.grupobedher.bedtab.notificación.FirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
