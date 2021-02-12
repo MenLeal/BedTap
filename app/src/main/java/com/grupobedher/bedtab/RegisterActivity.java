@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
      private String numtel;
     private FirebaseAuth mAuth;
     private AlertDialog dialog;
-    private String t;
+    private static final String t ="Registrando Usuario";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
         BContraC=findViewById(R.id.pswc);
         BNumT=findViewById(R.id.telefono);
         BRegist=findViewById(R.id.BRegistrar);
-        t="Registrando Usuario";
         mAuth=FirebaseAuth.getInstance();
 
 
@@ -85,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                         else if(!ve){
                             Toast.makeText(RegisterActivity.this, "Correo Inválido", Toast.LENGTH_SHORT).show();
                         }
-                        else if(telength<10 || telength>10){
+                        else if(telength != 10){
                             Toast.makeText(RegisterActivity.this, "Número Inválido", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -111,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
                             sendVerificationEmail();
+                            preRegist(email,nombre,numtel);
                         } else {
                             dialog.dismiss();
                             Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -120,32 +123,44 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
+    private void preRegist(String email, String nombre, String numtel) {
+        InputMethodManager inputMethodManager =  (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        SharedPreferences sharedPreferences = getSharedPreferences("PreRegis", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("num",numtel);
+        editor.putString("email",email);
+        editor.putString("nomb", nombre);
+        editor.apply();
+    }
+
     private void sendVerificationEmail()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseAuth.getInstance().signOut();
-                            Intent i=new Intent(RegisterActivity.this,LoginActivity.class);
-                            i.putExtra("Num",numtel);
-                            i.putExtra("Nomb",nombre);
-                            startActivity(i);
-                            finish();
+        if (user==null){
+            Toast.makeText(this,"ERROR",Toast.LENGTH_LONG).show();
+        }else{
+            user.sendEmailVerification()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseAuth.getInstance().signOut();
+                                Intent i=new Intent(RegisterActivity.this,LoginActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+                            else
+                            {
+                                overridePendingTransition(0, 0);
+                                finish();
+                                overridePendingTransition(0, 0);
+                                startActivity(getIntent());
+                            }
                         }
-                        else
-                        {
-                            overridePendingTransition(0, 0);
-                            finish();
-                            overridePendingTransition(0, 0);
-                            startActivity(getIntent());
+                    });
+        }
 
-                        }
-                    }
-                });
     }
     public void showRegist(String title){
         AlertDialog.Builder mBuilder=new AlertDialog.Builder(RegisterActivity.this);

@@ -3,9 +3,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,8 +19,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.grupobedher.bedtab.models.UserAdmin;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,16 +43,17 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private DatabaseReference mDatabase3;
-    private DatabaseReference mDatabase4;
     private String nombre;
     private String numtel;
     private AlertDialog dialog;
-    private String t;
+    private static  final String t = "Iniciando Sesion";
     private String id;
     private Calendar calendar;
-    private SimpleDateFormat simpleDateFormat;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy hh:mm a ");
     private String tstmp;
-    private String uid;
+    private static final String uid="5vuXOTy9SdTvYcWaaxfDx9ZeR7j2";
+    private static final String numAd="9868632211";
+    private static final String nombAd="Administrador";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,17 +62,14 @@ public class LoginActivity extends AppCompatActivity {
         BtnEntrar=findViewById(R.id.BtnEntrar);
         correoL=findViewById(R.id.correoL);
         contraL=findViewById(R.id.contraL);
-        nombre=getIntent().getStringExtra("Nomb");
-        numtel=getIntent().getStringExtra("Num");
-        t="Iniciando Sesión";
+        SharedPreferences sharedPreferences = getSharedPreferences("PreRegis", Context.MODE_PRIVATE);
+        nombre=sharedPreferences.getString("nomb", "");
+        numtel=sharedPreferences.getString("num", "");
         fAuth=FirebaseAuth.getInstance();
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase2= FirebaseDatabase.getInstance().getReference();
         mDatabase3= FirebaseDatabase.getInstance().getReference();
-        mDatabase4= FirebaseDatabase.getInstance().getReference();
         calendar= Calendar.getInstance();
-        simpleDateFormat=new SimpleDateFormat("dd/MMM/yyyy hh:mm a ");
-        uid="5vuXOTy9SdTvYcWaaxfDx9ZeR7j2";
         tstmp=simpleDateFormat.format(calendar.getTime());
         //Boton Registrar
         BtnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
-
 
         //Boton correo y contra
         BtnEntrar.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //Funcion Login Correo y Contra
-    public void LogIn(String c, String p){
+    public void LogIn(final String c, String p){
         fAuth.signInWithEmailAndPassword(c, p)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -112,8 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                             dialog.dismiss();
                             FirebaseUser user= fAuth.getCurrentUser();
                             if(user.isEmailVerified()){
-                                if(numtel==null && nombre==null){
+                                if(numtel.isEmpty() && nombre.isEmpty()){
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    guardarDatos(c);
                                     finish();
                                 }else{
                                     Map<String, Object> map=new HashMap<>();
@@ -145,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task2) {
                                                                         if(task2.isSuccessful()){
-                                                                            Toast.makeText(LoginActivity.this,"Registrado",Toast.LENGTH_LONG);
+                                                                            Toast.makeText(LoginActivity.this,"Registrado",Toast.LENGTH_LONG).show();
                                                                             Intent i=new Intent(LoginActivity.this, MainActivity.class);
                                                                             startActivity(i);
                                                                             finish();
@@ -173,6 +179,41 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void guardarDatos(final String correo) {
+        String id = fAuth.getUid();
+        InputMethodManager inputMethodManager =  (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        SharedPreferences sharedPreferences = getSharedPreferences("PreRegis", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (id.equals(uid)){
+            editor.putString("num",numAd);
+            editor.putString("email",correo);
+            editor.putString("nomb", nombAd);
+            editor.apply();
+        }else{
+            Query query =FirebaseDatabase.getInstance().getReference("Users").child("public").orderByChild("uid").equalTo(id);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot sp: snapshot.getChildren()){
+                        UserAdmin u = sp.getValue(UserAdmin.class);
+                        numtel = u.getPhone();
+                        nombre = u.getName();
+                    }
+                    editor.putString("num",numtel);
+                    editor.putString("email",correo);
+                    editor.putString("nomb", nombre);
+                    editor.apply();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+    }
+
     @Override
     public void onStart() {
         if(fAuth.getCurrentUser()!=null){

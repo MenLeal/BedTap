@@ -1,5 +1,7 @@
 package com.grupobedher.bedtab.ui.dashboard;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +52,10 @@ public class DashboardFragment extends Fragment {
     private TextView emailDialog;
     private Button btnCerrar;
     private String id;
-    private Usuario u;
+    private  String nombre;
+    private String numtel;
+    private String correo;
+    private SharedPreferences sharedPreferences;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
@@ -70,6 +75,10 @@ public class DashboardFragment extends Fragment {
         ref=database.getReference("Productos");
         refdelete=database2.getReference();
         mStoragedelete= FirebaseStorage.getInstance();
+        sharedPreferences = getActivity().getSharedPreferences("PreRegis", Context.MODE_PRIVATE);
+        nombre = sharedPreferences.getString("nomb", "");
+        numtel=sharedPreferences.getString("num", "");
+        correo = sharedPreferences.getString("email","");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -134,28 +143,17 @@ public class DashboardFragment extends Fragment {
                 numdialog=view1.findViewById(R.id.telefonodialog);
                 emailDialog=view1.findViewById(R.id.emaildialog);
                 btnCerrar=view1.findViewById(R.id.cerrars);
-                ref=database.getReference().child("Users").child("private").child(id);
-
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        u=snapshot.getValue(Usuario.class);
-                        nombredialog.setText(u.getNombre());
-                        numdialog.setText(u.getTelefono());
-                        emailDialog.setText(u.getEmail());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getContext(),"Cerrado Sesión",Toast.LENGTH_LONG).show();
-                    }
-                });
+                nombredialog.setText(nombre);
+                numdialog.setText(numtel);
+                emailDialog.setText(correo);
 
                 btnCerrar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         FirebaseAuth.getInstance().signOut();
                         getActivity().finish();
+                        SharedPreferences settings = getActivity().getSharedPreferences("PreRegis", Context.MODE_PRIVATE);
+                        settings.edit().clear().apply();
                         Intent i = new Intent(getActivity(),LoginActivity.class);
                         startActivity(i);
                     }

@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
-    private ImageButton back;
     private String nombre;
     private EditText etMensaje;
     private DatabaseReference mDatabase;

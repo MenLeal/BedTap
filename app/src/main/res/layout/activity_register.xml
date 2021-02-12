@@ -41,7 +41,8 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:hint="Email"
-                  android:background="@android:color/white"/>
+                  android:background="@android:color/white"
+                  android:inputType="textEmailAddress"/>
           </com.google.android.material.textfield.TextInputLayout>
           <com.google.android.material.textfield.TextInputLayout
               android:layout_width="match_parent"
@@ -52,7 +53,8 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:hint="Numero de Celular"
-                  android:background="@android:color/white"/>
+                  android:background="@android:color/white"
+                  android:inputType="phone"/>
           </com.google.android.material.textfield.TextInputLayout>
           <com.google.android.material.textfield.TextInputLayout
               android:layout_width="match_parent"

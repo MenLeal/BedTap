@@ -1,5 +1,6 @@
 package com.grupobedher.bedtab.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +61,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Mensaje> mList;
     private MensajesAdapter adapter;
+    private FirebaseRecyclerAdapter adapterF;
+    private FirebaseRecyclerOptions<UserAdmin> options;
     private String id;
     private String uid;
     private LinearLayoutManager linearLayoutManager;
@@ -72,6 +75,7 @@ public class HomeFragment extends Fragment {
     private Mensaje msga;
     private boolean notify;
     private RequestQueue requestQueue;
+    @SuppressLint("SimpleDateFormat")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -103,11 +107,10 @@ public class HomeFragment extends Fragment {
             etMensaje.setVisibility(View.GONE);
             Query query =mDatabase3
                     .child("Users").child("public");
-            FirebaseRecyclerOptions<UserAdmin> options =
-                    new FirebaseRecyclerOptions.Builder<UserAdmin>()
+            options = new FirebaseRecyclerOptions.Builder<UserAdmin>()
                             .setQuery(query, UserAdmin.class)
                             .build();
-            FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<UserAdmin, ChatViewHolder>(options) {
+            adapterF = new FirebaseRecyclerAdapter<UserAdmin, ChatViewHolder>(options) {
                 @Override
                 public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                     View view = LayoutInflater.from(parent.getContext())
@@ -128,7 +131,6 @@ public class HomeFragment extends Fragment {
                             }
                             msga = mList.get(mList.size() - 1);
                             String msg = msga.getMensaje();
-                            String mid = msga.getId();
                             if (mList.get(mList.size()-1).getSender() .equals(model.getUid())) {
                                 holder.numNoti.setVisibility(View.VISIBLE);
                                 holder.numTelefono.setText(msg);
@@ -138,7 +140,7 @@ public class HomeFragment extends Fragment {
                                     numensaje += 1;
                                     tamlist -= 1;
                                 }
-                                holder.numNoti.setText("" + numensaje);
+                                holder.numNoti.setText(numensaje);
                             } else {
                                 holder.numTelefono.setText(msg);
                             }
@@ -162,8 +164,8 @@ public class HomeFragment extends Fragment {
                     });
                 }
             };
-            adapter.startListening();
-            recyclerView.setAdapter(adapter);
+            adapterF.startListening();
+            recyclerView.setAdapter(adapterF);
         }
         else{
             mDatabase2.child("Chats").child("private").child(id).addValueEventListener(new ValueEventListener() {
