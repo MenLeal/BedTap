@@ -75,7 +75,6 @@ public class HomeFragment extends Fragment {
     private Mensaje msga;
     private boolean notify;
     private RequestQueue requestQueue;
-    @SuppressLint("SimpleDateFormat")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -140,7 +139,8 @@ public class HomeFragment extends Fragment {
                                     numensaje += 1;
                                     tamlist -= 1;
                                 }
-                                holder.numNoti.setText(numensaje);
+                                String result = String.valueOf(numensaje);
+                                holder.numNoti.setText(result);
                             } else {
                                 holder.numTelefono.setText(msg);
                             }
